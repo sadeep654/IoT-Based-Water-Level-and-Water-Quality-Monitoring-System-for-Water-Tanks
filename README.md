@@ -30,7 +30,7 @@ This system automates the monitoring of water tanks by collecting data from mult
 ## 🔹 Architecture
 
 <p align="center">
-  <img src="img/diagram.jpg" width="100%" alt="water" />
+  <img src="img/diagram.png" width="100%" alt="water" />
 </p>
 
 >**Architecture Summary**
