@@ -10,7 +10,7 @@
 This system automates the monitoring of water tanks by collecting data from multiple sensors and displaying it through a web dashboard. It alerts the user when the tank is too low or full, and automatically controls the pump based on predefined thresholds. In addition to level detection, the system evaluates water quality using pH and turbidity measurements.
 >See the demo video below for a quick visual explanation of how the system works.
 <p align="center">
-  <img src="img/demo.gif" alt="Vehicle Accident Alert Demo" width="1000px">
+  <img src="img/demo.gif" alt="water" width="1000px">
 </p>
  
 >Full system description referenced from project documentation.
@@ -27,8 +27,13 @@ This system automates the monitoring of water tanks by collecting data from mult
 
 ---
 
-## 🔹 System Architecture  
+## 🔹 Architecture
 
+<p align="center">
+  <img src="img/diagram.jpg" width="100%" alt="water" />
+</p>
+
+>**Architecture Summary**
 ### **Core Modules**
 - **Water Level Module:** Ultrasonic sensor + controller unit  
 - **Water Quality Module:** pH and turbidity sensors  
