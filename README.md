@@ -34,14 +34,14 @@ This system automates the monitoring of water tanks by collecting data from mult
 </p>
 
 >**Architecture Summary**
-### **Core Modules**
+>### **Core Modules**
 - **Water Level Module:** Ultrasonic sensor + controller unit  
 - **Water Quality Module:** pH and turbidity sensors  
 - **Communication Module:** Wi-Fi (NodeMCU) and optional GSM alerts  
 - **Control Module:** Automatic pump control + manual override  
 - **Visualization Module:** Web/mobile dashboard for live data  
 
-### **How It Works**
+>### **How It Works**
 1. Water level and quality sensors collect data continuously  
 2. Microcontrollers process the measurements  
 3. Data is transmitted to a cloud dashboard  
@@ -66,7 +66,71 @@ This system automates the monitoring of water tanks by collecting data from mult
 
 ---
 
-## 📁 Suggested Repository Structure  
 ---
 
-## 📁 Suggested Repository Structure
+## 🔹 Testing Approach  
+
+- Verified each sensor independently (pH, turbidity, ultrasonic)  
+- Tested Wi-Fi connectivity, cloud data flow, and dashboard interface  
+- Performed five trials per water source sample  
+- Compared measurements with physical/manual readings  
+- Monitored full system performance for reliability and response time  
+
+---
+
+## 🔹 Key Features  
+
+>### **Water Level Monitoring**
+- Ultrasonic sensor for accurate distance measurement  
+- Alerts for low, medium, and full tank status  
+- Automatic pump cutoff at full level  
+- Dry-run protection when water is low  
+
+>### **Water Quality Monitoring**
+- pH sensor for acidity/alkalinity  
+- Turbidity sensor for water clarity  
+- Optional dissolved oxygen readings  
+
+>### **Connectivity & Alerts**
+- Wi-Fi for real-time updates  
+- GSM alerts for critical conditions  
+- Web dashboard to view water status and pump state  
+
+---
+
+## 🔹 Software Tools  
+
+- Arduino IDE  
+- Visual Studio Code  
+- Blynk / Firebase / Custom Web App  
+- Google Sheets (optional logging)  
+- Android Studio (optional mobile app)
+
+---
+
+## 🔹 Future Improvements  
+
+- Add temperature, TDS, and conductivity sensors  
+- Implement AI/ML-based water quality prediction  
+- Integrate into full smart-home automation  
+- Build a dedicated mobile application  
+- Cloud IoT dashboard with analytics  
+
+---
+
+## 🔹 License & Citation 
+```bash
+This project is released under the MIT License.  
+See the `LICENSE` file for full license details.
+```
+- **If you use this work in any form—academic, research, educational, or practical—please cite it as:**
+```bash
+Kasthuriarachchi, S.D. & Perera, H.A.K.D., 2022. IoT Water Level and Water Quality Monitoring System. [Online] Available at: https://github.com/sadeep654/IoT-Water-Monitoring-System (Accessed: date-you-accessed).
+```
+
+---
+
+## 🧑‍💻 Authors  
+
+>- **Sadeep Dilshan Kasthuriarachchi**  
+>- **Perera H.A.K.D.**
