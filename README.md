@@ -132,5 +132,5 @@ Kasthuriarachchi, S.D. & Perera, H.A.K.D., 2022. IoT Water Level and Water Quali
 
 ## 🧑‍💻 Authors  
 
->- **Sadeep Dilshan Kasthuriarachchi**  
+>- **Kasthuriarachchi, S.D.**  
 >- **Perera H.A.K.D.**
