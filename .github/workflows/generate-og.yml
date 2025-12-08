@@ -1,0 +1,95 @@
+name: Generate OG Image
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install --upgrade pip pillow requests
+
+      - name: Fetch GitHub Profile Avatar
+        env:
+          OWNER: ${{ github.repository_owner }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p assets
+          AVATAR_URL=$(curl -s -H "Authorization: token ${TOKEN}" https://api.github.com/users/${OWNER} | python3 -c "import sys, json; obj=json.load(sys.stdin); print(obj.get('avatar_url',''))")
+          echo "Avatar URL: $AVATAR_URL"
+          if [ -n "$AVATAR_URL" ]; then
+            curl -s -L -o assets/brand-logo.png "$AVATAR_URL" || echo "avatar download failed"
+            echo "Downloaded avatar to assets/brand-logo.png"
+          else
+            echo "No avatar URL found, skipping download"
+          fi
+
+      - name: Fetch GitHub mark (small icon)
+        run: |
+          mkdir -p assets
+          # official GitHub mark (square)
+          curl -s -L -o assets/github-mark.png https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png || true
+          ls -lah assets || true
+
+      - name: Run OG card generator
+        env:
+          REPO_NAME: ${{ github.repository }}
+          REPO_DESC: ${{ github.event.repository.description }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          python3 scripts/generate_og.py \
+            --output social_preview.png \
+            --title "${REPO_NAME}" \
+            --subtitle "${REPO_DESC}" \
+            --author "${REPO_OWNER}" \
+            --sha "${COMMIT_SHA}" \
+            --logo "assets/brand-logo.png" \
+            --github-mark "assets/github-mark.png"
+
+      - name: Show generated image
+        run: ls -lah social_preview.png || true
+
+      - name: Commit and push image if changed (safe)
+        env:
+          GIT_AUTHOR_NAME: github-actions
+          GIT_AUTHOR_EMAIL: actions@users.noreply.github.com
+        run: |
+          set -euo pipefail
+          git config --global user.name "${GIT_AUTHOR_NAME}"
+          git config --global user.email "${GIT_AUTHOR_EMAIL}"
+
+          # ensure latest remote main is available
+          git fetch origin main --depth=1 || true
+
+          if git status --porcelain | grep -q social_preview.png; then
+            git add social_preview.png
+            git commit -m "chore: update social_preview.png (auto-generated)" || true
+          else
+            echo "No changes to commit."
+          fi
+
+          # Rebase onto remote main to avoid non-fast-forward errors. If rebase fails, abort and skip push.
+          if git rev-parse --verify origin/main >/dev/null 2>&1; then
+            git pull --rebase origin main || { echo "Rebase failed — aborting and skipping push"; git rebase --abort || true; exit 0; }
+          fi
+
+          # Push changes (fast-forward). If push fails, skip to avoid failing the workflow.
+          git push origin main || { echo "Push failed — skipping push"; exit 0; }
